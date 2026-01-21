@@ -9,9 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@babel/runtime": "^7.28.6",
+    "@notionhq/client": "^5.7.0",
+    "framer-motion": "^12.27.2",
     "next": "16.1.4",
+    "notion-client": "^7.7.3",
+    "notion-types": "^7.7.3",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-notion-x": "^7.7.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
