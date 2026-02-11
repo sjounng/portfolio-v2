@@ -3,17 +3,44 @@
 import dynamic from "next/dynamic";
 import type { ExtendedRecordMap } from "notion-types";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { Component, useEffect, type ReactNode } from "react";
 
 const NotionRenderer = dynamic(
   () => import("react-notion-x").then((mod) => mod.NotionRenderer),
   { ssr: false }
 );
 
-const Collection = dynamic(
+const CollectionBase = dynamic(
   () => import("react-notion-x/build/third-party/collection").then((mod) => mod.Collection),
   { ssr: false }
 );
+
+class NotionErrorBoundary extends Component<
+  { children: ReactNode; fallback?: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? <div className="p-4 text-sm text-muted">콘텐츠를 불러올 수 없습니다.</div>;
+    }
+    return this.props.children;
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function Collection(props: any) {
+  return (
+    <NotionErrorBoundary>
+      <CollectionBase {...props} />
+    </NotionErrorBoundary>
+  );
+}
 
 interface NotionPageClientProps {
   recordMap: ExtendedRecordMap;
@@ -24,7 +51,7 @@ export default function NotionPageClient({ recordMap, rootPageId }: NotionPageCl
   useEffect(() => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://unpkg.com/react-notion-x@6.16.0/src/styles.css";
+    link.href = "https://unpkg.com/react-notion-x@7.7.3/src/styles.css";
     document.head.appendChild(link);
 
     return () => {
@@ -52,17 +79,25 @@ export default function NotionPageClient({ recordMap, rootPageId }: NotionPageCl
       className="min-h-screen pt-24 pb-12 flex flex-col"
     >
       <div className="w-full px-6 flex-1">
-        <NotionRenderer
-          recordMap={recordMap}
-          fullPage={false}
-          darkMode={false}
-          disableHeader={true}
-          rootPageId={rootPageId}
-          mapPageUrl={mapPageUrl}
-          components={{
-            Collection
-          }}
-        />
+        <NotionErrorBoundary
+          fallback={
+            <div className="min-h-[50vh] flex items-center justify-center">
+              <p className="text-muted">노션 페이지를 렌더링할 수 없습니다.</p>
+            </div>
+          }
+        >
+          <NotionRenderer
+            recordMap={recordMap}
+            fullPage={false}
+            darkMode={false}
+            disableHeader={true}
+            rootPageId={rootPageId}
+            mapPageUrl={mapPageUrl}
+            components={{
+              Collection
+            }}
+          />
+        </NotionErrorBoundary>
       </div>
       <footer className="py-6 px-6 border-t border-border mt-12 bg-accent">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">

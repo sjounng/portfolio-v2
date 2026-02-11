@@ -1,0 +1,13 @@
+diff --git a/node_modules/notion-utils/build/index.js b/node_modules/notion-utils/build/index.js
+index 8df92d9..fd5384c 100644
+--- a/node_modules/notion-utils/build/index.js
++++ b/node_modules/notion-utils/build/index.js
+@@ -536,7 +536,7 @@ var normalizeTitle = (title) => {
+ };
+ 
+ // src/uuid-to-id.ts
+-var uuidToId = (uuid) => uuid.replaceAll("-", "");
++var uuidToId = (uuid) => (uuid || "").replaceAll("-", "");
+ 
+ // src/get-canonical-page-id.ts
+ var getCanonicalPageId = (pageId, recordMap, { uuid = true } = {}) => {
