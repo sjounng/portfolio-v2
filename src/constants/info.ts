@@ -26,7 +26,6 @@ export const TECH_STACKS: Record<string, TechStackCategory> = {
       { name: "Node.js", color: "339933", logo: "Node.js", logoColor: "white" },
       { name: "NestJS", color: "E0234E", logo: "NestJS", logoColor: "white" },
       { name: "FastAPI", color: "009688", logo: "FastAPI", logoColor: "white" },
-      { name: "Redis", color: "DC382D", logo: "Redis", logoColor: "white" },
     ],
   },
   devops: {
@@ -38,6 +37,7 @@ export const TECH_STACKS: Record<string, TechStackCategory> = {
       { name: "MySQL", color: "4479A1", logo: "MySQL", logoColor: "white" },
       { name: "PostgreSQL", color: "4169E1", logo: "PostgreSQL", logoColor: "white" },
       { name: "MongoDB", color: "47A248", logo: "MongoDB", logoColor: "white" },
+      { name: "Redis", color: "DC382D", logo: "Redis", logoColor: "white" },
     ],
   },
   collaboration: {
@@ -55,12 +55,13 @@ export const ACTIVITIES: Project[] = [
   {
     title: "zkrypto 인턴",
     period: "2026. 1. ~ ",
-    details: ["QA 파트"],
+    details: ["개발 부문"],
   },
   {
-    title: "forif, SW팀 백엔드",
+    title: "한양대학교 중앙 동아리 FORIF",
     period: "2025. 7. ~ ",
     details: [
+      "SW팀 백엔드 팀장",
       "forif web v2 백엔드 개발",
       "기존 데이터베이스 관리 및 유지 보수",
       "https://forif.org/",
@@ -92,5 +93,5 @@ export const EDUCATION: Education[] = [
 
 export const PROFILE = {
   name: "송준우",
-  introduction: `풀스택 웹 개발자를 지망하고 있습니다. \n 주로 Spring Boot를 활용한 백엔드 개발을 하며, \n AI를 활용하여 더 나은 사용자 경험을 만들어가는 개발자가 되고자 합니다.`,
+  introduction: `풀스택 웹 개발자를 지망하고 있습니다. \n 주로 Spring Boot를 사용한 백엔드 개발을 하며, \n AI를 활용하여 더 나은 사용자 경험을 만들어가는 개발자가 되고자 합니다.`,
 } as const;

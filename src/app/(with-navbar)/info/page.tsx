@@ -1,10 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import { TechStackSection, ProjectItem, EducationItem } from "@/components/info";
 import { TECH_STACKS, ACTIVITIES, EDUCATION, PROFILE } from "@/constants/info";
 import { FullpageScroll } from "@/components/ui/fullpage-scroll";
+import { createBadgeUrl } from "@/lib/utils";
 
 export default function InfoPage() {
+  // 페이지 마운트 시 모든 배지 이미지를 미리 로드
+  useEffect(() => {
+    Object.values(TECH_STACKS).forEach((category) => {
+      category.badges.forEach((badge) => {
+        const img = new Image();
+        img.src = createBadgeUrl(badge);
+      });
+    });
+  }, []);
   return (
     <FullpageScroll>
       {/* 1. Header */}

@@ -14,6 +14,7 @@ export function FullpageScroll({ children }: FullpageScrollProps) {
   const [isFirstMount, setIsFirstMount] = useState(true);
   const isAnimatingRef = useRef(false);
   const lastWheelTimeRef = useRef(0);
+  const touchStartYRef = useRef(0);
   const totalSections = children.length;
   const { setCurrentPage } = usePage();
 
@@ -72,12 +73,39 @@ export function FullpageScroll({ children }: FullpageScrollProps) {
       }
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartYRef.current = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (isAnimatingRef.current) return;
+
+      const deltaY = touchStartYRef.current - e.changedTouches[0].clientY;
+      if (Math.abs(deltaY) < 50) return;
+
+      if (deltaY > 0) {
+        goToSection(currentIndex + 1, 1);
+      } else {
+        goToSection(currentIndex - 1, -1);
+      }
+    };
+
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, totalSections]);
@@ -118,7 +146,7 @@ export function FullpageScroll({ children }: FullpageScrollProps) {
           onAnimationComplete={handleAnimationComplete}
           className="absolute inset-0 flex items-center justify-center"
         >
-          <div className="w-full max-w-4xl px-6 pt-16">{children[currentIndex]}</div>
+          <div className="w-full max-w-4xl px-6 pt-4 md:pt-16">{children[currentIndex]}</div>
         </motion.div>
       </AnimatePresence>
 
