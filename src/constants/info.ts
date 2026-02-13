@@ -71,7 +71,7 @@ export const ACTIVITIES: Project[] = [
     title: "AI 생성 이미지 판별 모델 개발",
     period: "2025. 9. ~ 2025. 11.",
     details: [
-      "담당: 데이터 전처리, 모델 구현, github 관리",
+      "데이터 전처리, 모델 구현, github 관리",
       "Python, Pytorch, torchvision",
     ],
   },
