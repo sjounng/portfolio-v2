@@ -1,5 +1,7 @@
 import { getNotionPage } from "@/lib/notion";
-import NotionPageClient from "../notion-client";
+import { NotionBlocks } from "@/components/notion/notion-blocks";
+import { NotionToc, collectHeadings } from "@/components/notion/notion-toc";
+import NotionShell from "../notion-shell";
 
 export const revalidate = 3600;
 
@@ -9,7 +11,24 @@ interface PageProps {
 
 export default async function NotionSubPage({ params }: PageProps) {
   const { pageId } = await params;
-  const recordMap = await getNotionPage(pageId);
+  const { title, blocks } = await getNotionPage(pageId);
 
-  return <NotionPageClient recordMap={recordMap} rootPageId={pageId} />;
+  if (blocks.length === 0) {
+    return (
+      <NotionShell>
+        <p className="text-muted">노션 페이지를 불러올 수 없습니다.</p>
+      </NotionShell>
+    );
+  }
+
+  const headings = collectHeadings(blocks);
+
+  return (
+    <NotionShell
+      title={title}
+      toc={headings.length >= 2 ? <NotionToc headings={headings} /> : undefined}
+    >
+      <NotionBlocks blocks={blocks} />
+    </NotionShell>
+  );
 }

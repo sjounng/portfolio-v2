@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/info", label: "Info" },
   { href: "/notion", label: "Notion" },
+  { href: "/github", label: "GitHub" },
 ];
 
 export default function Navbar() {
@@ -54,14 +55,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <a
-            href="https://github.com/sjounng"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-base text-muted hover:text-foreground transition-colors"
-          >
-            GitHub
-          </a>
           <ThemeToggle />
         </nav>
 
@@ -112,15 +105,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <a
-              href="https://github.com/sjounng"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base text-muted hover:text-foreground transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              GitHub
-            </a>
             <div className="pt-2">
               <ThemeToggle />
             </div>

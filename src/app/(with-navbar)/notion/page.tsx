@@ -1,10 +1,15 @@
-import { getNotionPage, NOTION_PAGE_ID } from "@/lib/notion";
-import NotionPageClient from "./notion-client";
+import { getDatabaseItems } from "@/lib/notion";
+import { NotionList } from "@/components/notion/notion-list";
+import NotionShell from "./notion-shell";
 
 export const revalidate = 3600;
 
 export default async function NotionPage() {
-  const recordMap = await getNotionPage(NOTION_PAGE_ID);
+  const { title, items } = await getDatabaseItems();
 
-  return <NotionPageClient recordMap={recordMap} />;
+  return (
+    <NotionShell title={title || "Notion"} wide>
+      <NotionList items={items} />
+    </NotionShell>
+  );
 }

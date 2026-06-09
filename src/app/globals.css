@@ -28,6 +28,7 @@
 
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
@@ -46,3 +47,82 @@ body {
 * {
   border-color: var(--border);
 }
+
+/* 노션 코드 박스 (테마 대응) */
+.notion-code { background: #f7f6f3; }
+.dark .notion-code { background: #1f1f1f; }
+
+/* Shiki 문법 하이라이팅 (듀얼 테마) — 라이트는 인라인, 다크는 변수로 덮어쓰기 */
+.notion-code .shiki {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  background: transparent !important;
+  font-family: var(--font-mono), monospace;
+}
+.dark .notion-code .shiki,
+.dark .notion-code .shiki span {
+  color: var(--shiki-dark) !important;
+}
+
+/* 노션 콜아웃 배경 (라이트) */
+.notion-callout[data-color="default"],
+.notion-callout[data-color="gray"],
+.notion-callout[data-color="gray_background"]   { background: #f1f1ef; }
+.notion-callout[data-color="brown_background"]  { background: #f4eeee; }
+.notion-callout[data-color="orange_background"] { background: #faebdd; }
+.notion-callout[data-color="yellow_background"] { background: #fbf3db; }
+.notion-callout[data-color="green_background"]  { background: #edf3ec; }
+.notion-callout[data-color="blue_background"]   { background: #e7f3f8; }
+.notion-callout[data-color="purple_background"] { background: #f6f3f9; }
+.notion-callout[data-color="pink_background"]   { background: #faf1f5; }
+.notion-callout[data-color="red_background"]    { background: #fdebec; }
+/* 노션 콜아웃 배경 (다크) */
+.dark .notion-callout[data-color="default"],
+.dark .notion-callout[data-color="gray"],
+.dark .notion-callout[data-color="gray_background"]   { background: #2a2a2a; }
+.dark .notion-callout[data-color="brown_background"]  { background: #3a2c22; }
+.dark .notion-callout[data-color="orange_background"] { background: #3a2b1d; }
+.dark .notion-callout[data-color="yellow_background"] { background: #38331e; }
+.dark .notion-callout[data-color="green_background"]  { background: #1e3328; }
+.dark .notion-callout[data-color="blue_background"]   { background: #1e3640; }
+.dark .notion-callout[data-color="purple_background"] { background: #2c2438; }
+.dark .notion-callout[data-color="pink_background"]   { background: #38232f; }
+.dark .notion-callout[data-color="red_background"]    { background: #3a2320; }
+
+/* GitHub 잔디 (라이트) */
+.gh-cell[data-level="0"] { background: #ebedf0; }
+.gh-cell[data-level="1"] { background: #9be9a8; }
+.gh-cell[data-level="2"] { background: #40c463; }
+.gh-cell[data-level="3"] { background: #30a14e; }
+.gh-cell[data-level="4"] { background: #216e39; }
+/* GitHub 잔디 (다크) */
+.dark .gh-cell[data-level="0"] { background: #1b1f23; }
+.dark .gh-cell[data-level="1"] { background: #0e4429; }
+.dark .gh-cell[data-level="2"] { background: #006d32; }
+.dark .gh-cell[data-level="3"] { background: #26a641; }
+.dark .gh-cell[data-level="4"] { background: #39d353; }
+
+/* Notion 태그 색상 (라이트) */
+.notion-pill[data-color="default"],
+.notion-pill[data-color="gray"] { background: #e3e2e0; color: #5a5a57; }
+.notion-pill[data-color="brown"]  { background: #eee0da; color: #64473a; }
+.notion-pill[data-color="orange"] { background: #fadec9; color: #8b4d23; }
+.notion-pill[data-color="yellow"] { background: #fdecc8; color: #8a6e2f; }
+.notion-pill[data-color="green"]  { background: #dbeddb; color: #2c5a3e; }
+.notion-pill[data-color="blue"]   { background: #d3e5ef; color: #28456c; }
+.notion-pill[data-color="purple"] { background: #e8deee; color: #492f64; }
+.notion-pill[data-color="pink"]   { background: #f5e0e9; color: #7a2954; }
+.notion-pill[data-color="red"]    { background: #ffe2dd; color: #a02c1c; }
+
+/* Notion 태그 색상 (다크: 어둡고 차분하게) */
+.dark .notion-pill[data-color="default"],
+.dark .notion-pill[data-color="gray"] { background: #373737; color: #b4b4b4; }
+.dark .notion-pill[data-color="brown"]  { background: #3a2e26; color: #b58f76; }
+.dark .notion-pill[data-color="orange"] { background: #422d1c; color: #c98a55; }
+.dark .notion-pill[data-color="yellow"] { background: #423a1e; color: #c9ac5a; }
+.dark .notion-pill[data-color="green"]  { background: #1f3a2a; color: #84b594; }
+.dark .notion-pill[data-color="blue"]   { background: #1d3647; color: #82add0; }
+.dark .notion-pill[data-color="purple"] { background: #322843; color: #a98fc7; }
+.dark .notion-pill[data-color="pink"]   { background: #422432; color: #c98bab; }
+.dark .notion-pill[data-color="red"]    { background: #43241d; color: #cc8576; }
