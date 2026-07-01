@@ -54,24 +54,24 @@ export const TECH_STACKS: Record<string, TechStackCategory> = {
 export const ACTIVITIES: Project[] = [
   {
     title: "zkrypto 인턴",
-    period: "2026. 1. ~ ",
-    details: ["개발 부문"],
+    period: "2026. 1. ~ 2026. 7",
+    details: ["기획 / 개발 / QA"],
   },
   {
     title: "한양대학교 중앙 동아리 FORIF",
-    period: "2025. 7. ~ ",
+    period: "2025. 7. ~ 2026. 6.",
     details: [
       "SW팀 백엔드 팀장",
-      "forif web v2 백엔드 개발",
-      "기존 데이터베이스 관리 및 유지 보수",
-      "https://forif.org/",
+      "forif web 리뉴얼 기획/개발",
+      "기존 백엔드 및 데이터베이스 유지 보수",
+      "https://forif.org",
     ],
   },
   {
     title: "AI 생성 이미지 판별 모델 개발",
     period: "2025. 9. ~ 2025. 11.",
     details: [
-      "데이터 전처리, 모델 구현, github 관리",
+      "데이터 전처리, 모델 구현",
       "Python, Pytorch, torchvision",
     ],
   },
