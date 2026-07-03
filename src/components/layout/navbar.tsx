@@ -9,6 +9,7 @@ import { usePage } from "@/context/page-context";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/info", label: "Info" },
+  { href: "/projects", label: "Projects" },
   { href: "/notion", label: "Notion" },
   { href: "/github", label: "GitHub" },
 ];
@@ -16,7 +17,7 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const { currentPage } = usePage();
+  const { currentPage, navbarHidden } = usePage();
 
   useEffect(() => {
     // 타이머 콜백 내에서 setState를 호출하여 동기적 호출 방지
@@ -29,18 +30,34 @@ export default function Navbar() {
     return () => clearTimeout(timer);
   }, [currentPage]);
 
+  const shown = isVisible && !navbarHidden;
+
   return (
     <motion.header
       initial={{ y: 0, opacity: 1 }}
       animate={{
-        y: isVisible ? 0 : -100,
-        opacity: isVisible ? 1 : 0,
+        y: shown ? 0 : -100,
+        opacity: shown ? 1 : 0,
       }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="fixed top-0 left-0 right-0 z-50 py-4 px-6 bg-background/80 backdrop-blur-sm border-b border-border"
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+      style={{ pointerEvents: shown ? "auto" : "none" }}
+      className="fixed top-0 left-0 right-0 z-50 py-4 px-6 isolate"
     >
+      {/* 블러/배경을 별도 레이어로 분리 — 테마 전환 중 backdrop-filter 재합성이
+          버튼 등 헤더 콘텐츠를 깜빡이게 하지 않도록 */}
+      <div
+        aria-hidden
+        className={`absolute inset-0 -z-10 border-b transition-colors duration-700 ${
+          shown
+            ? "bg-background/80 backdrop-blur-sm border-border"
+            : "bg-transparent border-transparent"
+        }`}
+      />
       <div className="max-w-4xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="text-xl font-semibold tracking-tight transition-colors duration-700"
+        >
           June
         </Link>
 

@@ -42,6 +42,8 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   min-height: 100vh;
+  /* 테마 토글 시 부드럽게 전환 (첫 페인트 전에 테마가 적용되므로 로드 플래시 없음) */
+  transition: background-color 0.7s ease, color 0.7s ease;
 }
 
 * {

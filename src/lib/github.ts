@@ -7,6 +7,13 @@
  */
 export const GITHUB_USERNAME = process.env.GITHUB_USERNAME || "sjounng";
 
+export interface RepoLanguage {
+  name: string;
+  color: string | null;
+  /** 저장소 내 사용 비율 (0~100) */
+  percent: number;
+}
+
 export interface GitHubRepo {
   name: string;
   description: string | null;
@@ -15,6 +22,8 @@ export interface GitHubRepo {
   forks: number;
   language: string | null;
   languageColor: string | null;
+  /** 사용 언어 목록 (바이트 크기 기준 내림차순, 최대 8개) */
+  languages: RepoLanguage[];
   updatedAt: string;
 }
 
@@ -65,6 +74,10 @@ query($login: String!) {
         ... on Repository {
           name description url stargazerCount forkCount updatedAt
           primaryLanguage { name color }
+          languages(first: 8, orderBy: { field: SIZE, direction: DESC }) {
+            totalSize
+            edges { size node { name color } }
+          }
         }
       }
     }
@@ -78,6 +91,10 @@ query($login: String!) {
       nodes {
         name description url stargazerCount forkCount updatedAt
         primaryLanguage { name color }
+        languages(first: 8, orderBy: { field: SIZE, direction: DESC }) {
+          totalSize
+          edges { size node { name color } }
+        }
       }
     }
   }
@@ -85,6 +102,17 @@ query($login: String!) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapRepo(r: any): GitHubRepo {
+  const totalSize: number = r.languages?.totalSize ?? 0;
+  const languages: RepoLanguage[] =
+    totalSize > 0
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        r.languages.edges.map((e: any) => ({
+          name: e.node.name,
+          color: e.node.color ?? null,
+          percent: (e.size / totalSize) * 100,
+        }))
+      : [];
+
   return {
     name: r.name,
     description: r.description,
@@ -93,6 +121,7 @@ function mapRepo(r: any): GitHubRepo {
     forks: r.forkCount,
     language: r.primaryLanguage?.name ?? null,
     languageColor: r.primaryLanguage?.color ?? null,
+    languages,
     updatedAt: r.updatedAt,
   };
 }

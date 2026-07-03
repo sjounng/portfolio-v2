@@ -130,8 +130,8 @@ export function FullpageScroll({ children }: FullpageScrollProps) {
 
   return (
     <div className="h-screen overflow-hidden relative">
-      {/* Sections */}
-      <AnimatePresence mode="wait" custom={direction}>
+      {/* Sections — exit/enter 를 동시에 진행해 전환 체감 속도를 높임 */}
+      <AnimatePresence custom={direction}>
         <motion.div
           key={currentIndex}
           custom={direction}
@@ -140,7 +140,7 @@ export function FullpageScroll({ children }: FullpageScrollProps) {
           animate="center"
           exit="exit"
           transition={{
-            duration: 0.7,
+            duration: 0.5,
             ease: [0.76, 0, 0.24, 1],
           }}
           onAnimationComplete={handleAnimationComplete}

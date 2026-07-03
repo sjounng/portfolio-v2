@@ -9,13 +9,20 @@ export function ContributionGraph({
   weeks: ContributionDay[][];
   total: number;
 }) {
-  // 각 주(열) 첫 날의 월이 바뀌는 지점에 라벨 표시
-  const monthLabels = weeks.map((week, i) => {
-    const first = week[0];
-    if (!first) return "";
-    const month = new Date(first.date).getMonth();
-    const prevMonth = i > 0 && weeks[i - 1][0] ? new Date(weeks[i - 1][0].date).getMonth() : -1;
-    return month !== prevMonth ? MONTHS[month] : "";
+  // 각 주(열) 첫 날의 월이 바뀌는 지점에 라벨 표시.
+  // 연초·연말의 잘린 달(1~2열)은 라벨을 생략해 이웃 라벨과 겹치지 않게 한다.
+  const monthOf = (i: number) => {
+    const first = weeks[i]?.[0];
+    return first ? new Date(first.date).getMonth() : -1;
+  };
+  const monthLabels = weeks.map((_, i) => {
+    const month = monthOf(i);
+    if (month === -1) return "";
+    const prevMonth = i > 0 ? monthOf(i - 1) : -1;
+    if (month === prevMonth) return "";
+    // 이 달이 최소 3열 이상 이어질 때만 표시
+    if (monthOf(i + 1) !== month || monthOf(i + 2) !== month) return "";
+    return MONTHS[month];
   });
 
   return (
@@ -29,7 +36,7 @@ export function ContributionGraph({
           {/* 월 라벨 */}
           <div className="flex gap-[3px] pl-1 text-[10px] text-muted">
             {monthLabels.map((label, i) => (
-              <div key={i} className="w-[11px] shrink-0">
+              <div key={i} className="w-[11px] shrink-0 whitespace-nowrap">
                 {label}
               </div>
             ))}

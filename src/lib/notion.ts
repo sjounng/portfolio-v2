@@ -14,6 +14,10 @@ const notion = new Client({ auth: process.env.NOTION_TOKEN });
 export const NOTION_DATABASE_ID =
   process.env.NOTION_DATABASE_ID || "1cc803ffd83080a3a2e2c6ffccbd79ec";
 
+// 프로젝트 케이스 스터디 데이터베이스 id. 미설정 시 /projects 는 빈 목록을 보여준다.
+export const NOTION_PROJECTS_DATABASE_ID =
+  process.env.NOTION_PROJECTS_DATABASE_ID || "";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type NotionBlock = any & { children?: NotionBlock[] };
 
@@ -109,6 +113,10 @@ export interface NotionListItem {
   id: string;
   title: string;
   date: string | null;
+  /** date 속성의 종료일 (기간 표시용) */
+  dateEnd: string | null;
+  /** 첫 번째 rich_text 속성 (프로젝트 카드 요약용) */
+  summary: string | null;
   type: NotionTag | null;
   status: NotionTag | null;
   tags: NotionTag[];
@@ -127,6 +135,8 @@ export interface NotionDatabase {
 function readProps(properties: Record<string, any>) {
   let title = "";
   let date: string | null = null;
+  let dateEnd: string | null = null;
+  let summary: string | null = null;
   let type: NotionTag | null = null;
   let status: NotionTag | null = null;
   let order: number | null = null;
@@ -143,7 +153,17 @@ function readProps(properties: Record<string, any>) {
         title = prop.title.map((t: any) => t.plain_text).join("");
         break;
       case "date":
-        if (prop.date?.start && !date) date = prop.date.start;
+        if (prop.date?.start && !date) {
+          date = prop.date.start;
+          dateEnd = prop.date.end ?? null;
+        }
+        break;
+      case "rich_text":
+        if (!summary) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const text = prop.rich_text.map((t: any) => t.plain_text).join("");
+          if (text) summary = text;
+        }
         break;
       case "created_time":
         if (!date) date = prop.created_time;
@@ -159,7 +179,7 @@ function readProps(properties: Record<string, any>) {
         break;
     }
   }
-  return { title, date, type, status, tags, order };
+  return { title, date, dateEnd, summary, type, status, tags, order };
 }
 
 /** 데이터베이스의 글 목록을 가져온다 (작성일 내림차순). 실패 시 빈 결과. */

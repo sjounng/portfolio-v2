@@ -44,6 +44,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const html = document.documentElement;
     html.classList.remove("light", "dark");
     html.classList.add(theme);
+    html.style.colorScheme = theme;
     localStorage.setItem("theme", theme);
   }, [theme]);
 
